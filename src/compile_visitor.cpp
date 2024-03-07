@@ -32,4 +32,10 @@ std::any CompileVisitor::visitFunc_def(TParser::Func_defContext *ctx) {
     return visitChildren(ctx);
 }
 
+std::any CompileVisitor::visitFunc_var_in(TParser::Func_var_inContext *ctx) {
+//    std::cout << ctx->ID()[0]->getText() << std::endl;
+//    std::cout << ctx->name->getText() << std::endl;
+    return visitChildren(ctx);
+}
+
 }

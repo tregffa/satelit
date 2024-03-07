@@ -9,7 +9,7 @@ struct GlobalData;
 
 class RuntimeVisitor : public TParserBaseVisitor {
 public:
-    RuntimeVisitor(GlobalData& data);
+    RuntimeVisitor(GlobalData& data, std::string_view main);
 
     std::any visitProgram(TParser::ProgramContext *ctx) override;
 
@@ -24,6 +24,7 @@ public:
     void PrintVars();
 private:
     GlobalData& data_;
+    std::string main_;
 };
 
 

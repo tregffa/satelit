@@ -12,8 +12,7 @@ add_definitions(-DANTLR4CPP_STATIC)
 
 set(ANTLR4_WITH_STATIC_CRT OFF)
 
-# add external build for antlrcpp
-include(ExternalAntlr4Cpp)
+find_package(antlr4-runtime REQUIRED)
 
 # add antrl4cpp artifacts to project environment
 include_directories(${ANTLR4_INCLUDE_DIRS})

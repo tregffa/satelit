@@ -1,4 +1,4 @@
-#include "runtime_visitor.h".h"
+#include "runtime_visitor.h"
 #include "stack_machine.h"
 #include "interpreter.h"
 #include <iostream>
@@ -8,8 +8,8 @@ namespace satelit {
 
 StackMachine stack_;
 
-RuntimeVisitor::RuntimeVisitor(GlobalData& data) :
-    data_(data) {
+RuntimeVisitor::RuntimeVisitor(GlobalData& data, std::string_view main) :
+    data_(data), main_(main) {
 }
 
 std::any RuntimeVisitor::visitProgram(TParser::ProgramContext *ctx) {
@@ -41,7 +41,10 @@ std::any RuntimeVisitor::visitExpr(TParser::ExprContext *ctx) {
 
 std::any RuntimeVisitor::visitFunc(TParser::FuncContext *ctx) {
     std::cout << "Func need execute function" << std::endl;
-    return visitChildren(ctx);
+    if(ctx->name->getText() == main_) {
+        visitChildren(ctx);
+    }
+    return std::any{};
 }
 
 std::any RuntimeVisitor::visitFunc_def(TParser::Func_defContext *ctx) {

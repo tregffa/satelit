@@ -27,7 +27,7 @@ class Interpreter {
 public:
     Interpreter(){}
     void Compile(std::string text);
-    void Run();
+    void Run(std::string_view main);
     std::unordered_map<std::string, int>& get_variabels() {return data_.variables;}
     std::unordered_map<std::string, STFunction>& get_functions() {return data_.functions;}
 private:
@@ -37,6 +37,7 @@ private:
     std::shared_ptr<TLexer> lexer_;
     std::shared_ptr<TParser> parser_;
     std::shared_ptr<antlr4::CommonTokenStream> tokens_;
+    bool compiled_ { false };
 };
 }
 

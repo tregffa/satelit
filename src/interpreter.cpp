@@ -19,8 +19,9 @@ void Interpreter::Compile(std::string text) {
     compiler.visit(prog_);
 }
 
-void Interpreter::Run() {
-    RuntimeVisitor runtime(data_);
+void Interpreter::Run(std::string_view main) {
+    if(!compiled_) return;
+    RuntimeVisitor runtime(data_, main);
     runtime.visit(prog_);
 }
 
@@ -34,8 +35,8 @@ void STFunction::Run(GlobalData& data) {
     TParser parser(&tokens);
     TParser::ProgramContext* prog = parser.program();
 
-    RuntimeVisitor runtime(data);
-    runtime.visit(prog);
+    //RuntimeVisitor runtime(data);
+    //runtime.visit(prog);
 }
 
 }

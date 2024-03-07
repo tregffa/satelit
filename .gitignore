@@ -31,3 +31,8 @@
 *.exe
 *.out
 *.app
+*.txt.user
+
+#Folders
+out
+CMakeFiles
