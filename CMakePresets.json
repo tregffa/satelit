@@ -1,15 +1,15 @@
-﻿{
+{
     "version": 3,
     "configurePresets": [
         {
             "name": "Debug",
             "displayName": "Linux Debug",
-            "generator": "Ninja",
+            "generator": "Unix Makefiles",
             "binaryDir": "${sourceDir}/out/build/${presetName}",
             "installDir": "${sourceDir}/out/install/${presetName}",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/out/build/${presetName}/generators/conan_toolchain.cmake"
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/build/${presetName}/generators/conan_toolchain.cmake"
             },
             "condition": {
                 "type": "equals",

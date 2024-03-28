@@ -10,8 +10,12 @@ stat: ID EQ expr SEMI
     | expr SEMI
     ;
 
+number: DEC 
+      | FLOAT
+      ;
+
 expr: ID
-    | NUM
+    | number
     | func
     | NOT expr
     | lEx=expr AND rEx=expr
@@ -21,8 +25,9 @@ expr: ID
     ;
  type: VOID
     | INT
+    | REAL
     ;
 
 func_var_in: VAR_INPUT (name=ID COLON type SEMI)* END_VAR;
-func_def: FUNC name=ID COLON type func_var_in BEGIN body=stat* END_FUNC;
+func_def: FUNC name=ID COLON type func_var_in* BEGIN body=stat* END_FUNC;
 func : name=ID LPAREN expr (COMMA expr)* RPAREN;

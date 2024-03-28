@@ -36,3 +36,6 @@
 #Folders
 out
 CMakeFiles
+.vs
+cmake
+_deps

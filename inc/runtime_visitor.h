@@ -2,14 +2,15 @@
 #define RUNTIME_VISITOR_H
 
 #include "TParserBaseVisitor.h"
+#include "data_types/variable_map.h"
 
 namespace satelit {
 
-struct GlobalData;
+struct FunctionData;
 
 class RuntimeVisitor : public TParserBaseVisitor {
 public:
-    RuntimeVisitor(GlobalData& data, std::string_view main);
+    RuntimeVisitor(FunctionData& data);
 
     std::any visitProgram(TParser::ProgramContext *ctx) override;
 
@@ -21,10 +22,13 @@ public:
 
     std::any visitFunc_def(TParser::Func_defContext *ctx) override;
 
+    std::any visitNumber(TParser::NumberContext* ctx) override;
+
     void PrintVars();
 private:
-    GlobalData& data_;
-    std::string main_;
+    std::string& name_;
+    data_types::VariableMap& vars_;
+
 };
 
 

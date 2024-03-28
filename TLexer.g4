@@ -19,11 +19,18 @@ END_FUNC : 'END_FUNCTION';
 BEGIN : 'BEGIN' ;
 VOID : 'VOID';
 INT : 'INT';
+REAL : 'REAL';
 
 VAR_INPUT : 'VAR_INPUT';
 END_VAR : 'END_VAR';
 
-NUM : [0-9]+ ;
+FLOAT   : DIGIT+ '.' DIGIT*
+        | '.' DIGIT+
+        ;
+DEC     : DIGIT+;
+
+fragment DIGIT  : [0-9];
+
 ID: [a-zA-Z_][a-zA-Z_0-9]* ;
 WS: [ \t\n\r\f]+ -> skip ;
 

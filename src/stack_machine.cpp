@@ -1,5 +1,7 @@
 #include "stack_machine.h"
 
+using namespace Poco::Dynamic;
+
 namespace satelit {
 
 void StackMachine::addition() {
@@ -12,24 +14,24 @@ void StackMachine::multiple() {
     stack_.push(left * right);
 }
 
-void StackMachine::push(int value) {
+void StackMachine::push(Var value) {
     stack_.push(value);
 }
 
-int StackMachine::pop() {
-    int top = stack_.top();
+Var StackMachine::pop() {
+    Var top = stack_.top();
     stack_.pop();
     return top;
 }
 
-int StackMachine::top() {
+Var StackMachine::top() {
     return stack_.top();
 }
 
-std::pair<int, int> StackMachine::top_pair() {
-    int left = stack_.top();
+std::pair<Var, Var> StackMachine::top_pair() {
+    Var left = stack_.top();
     stack_.pop();
-    int right = stack_.top();
+    Var right = stack_.top();
     stack_.pop();
     return {left, right};
 }

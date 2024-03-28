@@ -5,11 +5,11 @@
 
 namespace satelit {
 
-struct GlobalData;
+struct FunctionData;
 
 class CompileVisitor : public TParserBaseVisitor {
 public:
-    CompileVisitor(GlobalData& data);
+    CompileVisitor(FunctionData& data);
 
     std::any visitProgram(TParser::ProgramContext *ctx) override;
 
@@ -25,7 +25,8 @@ public:
 
     void PrintVars();
 private:
-    GlobalData& data_;
+    FunctionData& data_;
+    size_t order_{ 0 };
 };
 
 

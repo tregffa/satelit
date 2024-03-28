@@ -1,11 +1,12 @@
-#include "compile_visitor.h".h"
-#include "interpreter.h"
+#include "compile_visitor.h"
+#include "stfunction.h"
 #include <iostream>
 #include <numeric>
+#include "exceptions/exceptions.h"
 
 namespace satelit {
 
-CompileVisitor::CompileVisitor(GlobalData& data) :
+CompileVisitor::CompileVisitor(FunctionData& data) :
     data_(data) {
 }
 
@@ -14,6 +15,8 @@ std::any CompileVisitor::visitProgram(TParser::ProgramContext *ctx) {
 }
 
 std::any CompileVisitor::visitStat(TParser::StatContext *ctx) {
+    auto var_name = ctx->ID()->getText();
+    if (!data_.vars_.count(var_name)) throw UndefinedVariable();
     return visitChildren(ctx);
 }
 
@@ -27,14 +30,19 @@ std::any CompileVisitor::visitFunc(TParser::FuncContext *ctx) {
 }
 
 std::any CompileVisitor::visitFunc_def(TParser::Func_defContext *ctx) {
-    STFunction function(std::move(ctx->body->getText()));
-    data_.functions.emplace(ctx->name->getText(), std::move(function));
+    //STFunction function(std::move(ctx->body->getText()));
+    //data_.functions.emplace(ctx->name->getText(), std::move(function));
+    data_.name_ = ctx->name->getText();
+    bool res = data_.vars_.insert(data_.name_, 0);
     return visitChildren(ctx);
 }
 
 std::any CompileVisitor::visitFunc_var_in(TParser::Func_var_inContext *ctx) {
-//    std::cout << ctx->ID()[0]->getText() << std::endl;
-//    std::cout << ctx->name->getText() << std::endl;
+    for (auto& var_name : ctx->ID()) {
+        if (!data_.vars_.insert(var_name->getText(), 0)) {
+            throw DoubleDefenition();
+        }
+    }
     return visitChildren(ctx);
 }
 

@@ -4,8 +4,8 @@ project(satelit)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-# compiler must be 17
-set(CMAKE_CXX_STANDARD 17)
+# compiler must be 20
+set(CMAKE_CXX_STANDARD 20)
 
 # required if linking to static library
 add_definitions(-DANTLR4CPP_STATIC)
@@ -13,6 +13,7 @@ add_definitions(-DANTLR4CPP_STATIC)
 set(ANTLR4_WITH_STATIC_CRT OFF)
 
 find_package(antlr4-runtime REQUIRED)
+find_package(Poco REQUIRED)
 
 # add antrl4cpp artifacts to project environment
 include_directories(${ANTLR4_INCLUDE_DIRS})
@@ -47,9 +48,9 @@ add_library(satelit STATIC
     src/stack_machine.cpp
     src/compile_visitor.cpp
     ${ANTLR_SampleGrammarLexer_CXX_OUTPUTS}
-    ${ANTLR_SampleGrammarParser_CXX_OUTPUTS})
+    ${ANTLR_SampleGrammarParser_CXX_OUTPUTS}  "inc/stfunction.h" "src/stfunction.cpp" "inc/exceptions/runtime_errors.h" "inc/exceptions/exceptions.h" "inc/data_types/variable_map.h" "src/data_types/variable_map.cpp")
 
 target_include_directories(satelit PUBLIC ${PROJECT_SOURCE_DIR}/inc)
-target_link_libraries(satelit antlr4_static Threads::Threads)
+target_link_libraries(satelit antlr4_static Poco::Poco Threads::Threads)
 
 add_subdirectory(tests)

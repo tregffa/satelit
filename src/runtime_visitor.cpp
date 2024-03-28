@@ -1,6 +1,6 @@
 #include "runtime_visitor.h"
 #include "stack_machine.h"
-#include "interpreter.h"
+#include "stfunction.h"
 #include <iostream>
 #include <numeric>
 
@@ -8,8 +8,8 @@ namespace satelit {
 
 StackMachine stack_;
 
-RuntimeVisitor::RuntimeVisitor(GlobalData& data, std::string_view main) :
-    data_(data), main_(main) {
+RuntimeVisitor::RuntimeVisitor(FunctionData& data) : name_(data.name_), 
+    vars_(data.vars_) {
 }
 
 std::any RuntimeVisitor::visitProgram(TParser::ProgramContext *ctx) {
@@ -19,13 +19,15 @@ std::any RuntimeVisitor::visitProgram(TParser::ProgramContext *ctx) {
 std::any RuntimeVisitor::visitStat(TParser::StatContext *ctx) {
     auto result = visitChildren(ctx);
     auto var_name = ctx->ID()->getText();
-    data_.variables[var_name] = stack_.top();
+    bool res = vars_.set(var_name, stack_.top());
     return result;
 }
 
 std::any RuntimeVisitor::visitExpr(TParser::ExprContext *ctx) {
     auto result = visitChildren(ctx);
-    if (ctx->PLUS()){
+    if (ctx->ID()) {
+        stack_.push(vars_.get(ctx->getText()));
+    } else if (ctx->PLUS()) {
         stack_.addition();
     } else if (ctx->MULT()){
         stack_.multiple();
@@ -33,17 +35,22 @@ std::any RuntimeVisitor::visitExpr(TParser::ExprContext *ctx) {
         std::cout << "AND" << std::endl;
     } else if (ctx->func()){
         std::cout << "FUNC" << std::endl;
-    } else if (ctx->NUM()){
-        stack_.push(stoi(ctx->getText()));
     }
     return result;
 }
 
+std::any RuntimeVisitor::visitNumber(TParser::NumberContext* ctx) {
+    if (ctx->DEC()) {
+        stack_.push(stoi(ctx->getText()));
+    } else if (ctx->FLOAT()) {
+        stack_.push(stof(ctx->getText()));
+    }
+    return visitChildren(ctx);
+}
+
 std::any RuntimeVisitor::visitFunc(TParser::FuncContext *ctx) {
     std::cout << "Func need execute function" << std::endl;
-    if(ctx->name->getText() == main_) {
-        visitChildren(ctx);
-    }
+    visitChildren(ctx);
     return std::any{};
 }
 
@@ -52,9 +59,9 @@ std::any RuntimeVisitor::visitFunc_def(TParser::Func_defContext *ctx) {
 }
 
 void RuntimeVisitor::PrintVars() {
-    for(auto& [name, value] : data_.variables){
-        std::cout << name << "\t=\t" << value << std::endl;
-    }
+    //for(auto& [name, value] : vars_){
+    //    std::cout << name << "\t=\t" << value << std::endl;
+    //}
 }
 
 }
