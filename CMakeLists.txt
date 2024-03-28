@@ -47,8 +47,10 @@ add_library(satelit STATIC
     src/runtime_visitor.cpp
     src/stack_machine.cpp
     src/compile_visitor.cpp
+    src/stfunction.cpp
+    src/data_types/variable_map.cpp
     ${ANTLR_SampleGrammarLexer_CXX_OUTPUTS}
-    ${ANTLR_SampleGrammarParser_CXX_OUTPUTS}  "inc/stfunction.h" "src/stfunction.cpp" "inc/exceptions/runtime_errors.h" "inc/exceptions/exceptions.h" "inc/data_types/variable_map.h" "src/data_types/variable_map.cpp")
+    ${ANTLR_SampleGrammarParser_CXX_OUTPUTS}  )
 
 target_include_directories(satelit PUBLIC ${PROJECT_SOURCE_DIR}/inc)
 target_link_libraries(satelit antlr4_static Poco::Poco Threads::Threads)
