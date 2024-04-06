@@ -19,7 +19,7 @@ std::any RuntimeVisitor::visitProgram(TParser::ProgramContext *ctx) {
 std::any RuntimeVisitor::visitStat(TParser::StatContext *ctx) {
     auto result = visitChildren(ctx);
     auto var_name = ctx->ID()->getText();
-    bool res = vars_.set(var_name, stack_.top());
+    bool res = vars_.set(var_name, stack_.pop());
     return result;
 }
 

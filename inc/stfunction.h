@@ -22,7 +22,7 @@ namespace satelit {
 		virtual ~STFunction() {};
 
 		void Compile(std::string text) override;
-		Poco::Dynamic::Var Run(const std::vector<int>& args) override;
+		Poco::Dynamic::Var Run(const std::vector<Poco::Dynamic::Var>& args) override;
 
 		data_types::VariableMap& get_variabels() { return data_.vars_; }
 	protected:

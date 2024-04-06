@@ -5,6 +5,7 @@
 
 
 using namespace antlr4;
+using namespace Poco::Dynamic;
 
 namespace satelit {
 
@@ -22,7 +23,7 @@ void STFunction::Compile(std::string text) {
     compiled_ = true;
 }
 
-Poco::Dynamic::Var STFunction::Run(const std::vector<int>& args) {
+Var STFunction::Run(const std::vector<Var>& args) {
     if (!compiled_) throw NotCompiled();
     for (size_t i = 0; i < args.size(); i++) {
         data_.vars_.set(i + 1, args[i]);

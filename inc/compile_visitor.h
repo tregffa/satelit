@@ -22,9 +22,10 @@ public:
     std::any visitFunc_def(TParser::Func_defContext *ctx) override;
 
     std::any visitFunc_var_in(TParser::Func_var_inContext *ctx) override;
-
+    
     void PrintVars();
 private:
+    void insertVariable(TParser::TypeContext* type, std::string_view name);
     FunctionData& data_;
     size_t order_{ 0 };
 };

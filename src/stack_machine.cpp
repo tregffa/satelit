@@ -1,4 +1,5 @@
 #include "stack_machine.h"
+#include <iostream>
 
 using namespace Poco::Dynamic;
 

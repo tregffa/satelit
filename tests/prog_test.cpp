@@ -3,6 +3,7 @@
 
 using namespace satelit;
 using namespace ::testing;
+using Poco::Dynamic::Var;
 
 TEST(SimplePrograms, CompileAndRunFunction) {
     STFunction st_function;
@@ -45,6 +46,27 @@ TEST(SimplePrograms, ProvideRealTypes) {
     float res = st_function.Run({});
     EXPECT_NEAR(res, 9.1, 0.01);
 }
+
+TEST(SimplePrograms, ProvideInputDifferentTypesVars) {
+    STFunction st_function;
+    st_function.Compile("\
+        FUNCTION sum : REAL\n\
+            VAR_INPUT\n\
+                a : REAL;\n\
+                b: REAL;\n\
+            END_VAR\n\
+        BEGIN\n\
+            sum = a + b; \
+        END_FUNCTION");
+    auto& vars = st_function.get_variabels();
+    EXPECT_TRUE(vars.count("a"));
+    EXPECT_TRUE(vars.count("b"));
+    EXPECT_TRUE(vars.count("sum"));
+
+    Var res = st_function.Run({ 4, 10.5 });
+    EXPECT_EQ(res, 14.5);
+}
+
 //
 //TEST(SimplePrograms, DISABLED_SimpleProgramm) {
 //    Interpreter interpreter;
