@@ -25,6 +25,7 @@ namespace satelit {
 		Poco::Dynamic::Var Run(const std::vector<Poco::Dynamic::Var>& args) override;
 
 		data_types::VariableMap& get_variabels() { return data_.vars_; }
+		data_types::VariableMap& get_out_vars() { return data_.vars_; }
 	protected:
 		TParser::ProgramContext* prog_;
 		antlr4::ANTLRInputStream input_;

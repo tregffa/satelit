@@ -9,7 +9,7 @@ TEST(SimplePrograms, CompileAndRunFunction) {
     STFunction st_function;
     st_function.Compile("FUNCTION main : INT\n"
                     "BEGIN\n"
-                    "main = 5 + 3 + 2;\n"
+                    "main := 5 + 3 + 2;\n"
                     "END_FUNCTION");
     int res = st_function.Run({});
     EXPECT_EQ(res, 10);
@@ -24,7 +24,7 @@ TEST(SimplePrograms, ProvideInputVars) {
                 b: INT;\n\
             END_VAR\n\
         BEGIN\n\
-            sum = a + b; \
+            sum := a + b; \
         END_FUNCTION");
     auto& vars = st_function.get_variabels();
     EXPECT_TRUE(vars.count("a"));
@@ -39,7 +39,7 @@ TEST(SimplePrograms, ProvideRealTypes) {
     STFunction st_function;
     st_function.Compile("FUNCTION main : REAL\n"
         "BEGIN\n"
-        "main = 5.5 + 3.6;\n"
+        "main := 5.5 + 3.6;\n"
         "END_FUNCTION");
     auto& vars = st_function.get_variabels();
 
@@ -56,7 +56,7 @@ TEST(SimplePrograms, ProvideInputDifferentTypesVars) {
                 b: REAL;\n\
             END_VAR\n\
         BEGIN\n\
-            sum = a + b; \
+            sum := a + b; \
         END_FUNCTION");
     auto& vars = st_function.get_variabels();
     EXPECT_TRUE(vars.count("a"));

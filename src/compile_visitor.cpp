@@ -48,4 +48,13 @@ std::any CompileVisitor::visitFunc_var_in(TParser::Func_var_inContext *ctx) {
     return visitChildren(ctx);
 }
 
+std::any CompileVisitor::visitFunc_var_out(TParser::Func_var_outContext* ctx) {
+
+    for (size_t i = 0; i < ctx->ID().size(); i++) {
+        auto name = ctx->ID(i)->getText();
+        if (!data_.vars_.insert(name, 0)) throw DoubleDefenition();
+    }
+    return visitChildren(ctx);
+}
+
 }

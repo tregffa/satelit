@@ -12,6 +12,7 @@ target_link_libraries(GTest::GTest INTERFACE gtest_main)
 add_executable(satelit_tests
     main.cpp
     prog_test.cpp
+    functions_test.cpp
     )
 
 target_link_libraries(satelit_tests
