@@ -11,30 +11,34 @@
 
 namespace satelit {
 
-	struct FunctionData {
-		std::string name_;
-		data_types::VariableMap vars_;
-	};
+class STFunction : public IProgramm {
+public:
+    using SPtr = std::shared_ptr<STFunction>;
 
-	class STFunction : public IProgramm {
-	public:
-		STFunction() {};
-		virtual ~STFunction() {};
+    STFunction(std::string name, std::string text);
+    virtual ~STFunction() {};
 
-		void Compile(std::string text) override;
-		Poco::Dynamic::Var Run(const std::vector<Poco::Dynamic::Var>& args) override;
+    void Compile(const std::string& text) override;
+    Poco::Dynamic::Var Run(const std::vector<Poco::Dynamic::Var>& args) override;
 
-		data_types::VariableMap& get_variabels() { return data_.vars_; }
-		data_types::VariableMap& get_out_vars() { return data_.vars_; }
-	protected:
-		TParser::ProgramContext* prog_;
-		antlr4::ANTLRInputStream input_;
-		std::shared_ptr<TLexer> lexer_;
-		std::shared_ptr<TParser> parser_;
-		std::shared_ptr<antlr4::CommonTokenStream> tokens_;
-		FunctionData data_;
-		bool compiled_{ false };
-	};
+    data_types::VariableMap& get_variabels() { return vars_; }
+    std::string get_name() { return name_; }
+    std::string get_body() { return body_; }
+protected:
+    antlr4::ANTLRInputStream input_;
+    std::shared_ptr<TLexer> lexer_;
+    std::shared_ptr<TParser> parser_;
+    std::shared_ptr<antlr4::CommonTokenStream> tokens_;
+    TParser::ProgramContext* prog_ctx_;
+
+private:
+    std::string name_;
+    std::string body_;
+
+private:
+    data_types::VariableMap vars_;
+    bool compiled_{ false };
+};
 
 }
 

@@ -10,7 +10,7 @@ struct FunctionData;
 
 class RuntimeVisitor : public TParserBaseVisitor {
 public:
-    RuntimeVisitor(FunctionData& data);
+    RuntimeVisitor(data_types::VariableMap& vars);
 
     std::any visitProgram(TParser::ProgramContext *ctx) override;
 
@@ -20,13 +20,9 @@ public:
 
     std::any visitFunc(TParser::FuncContext *ctx) override;
 
-    std::any visitFunc_def(TParser::Func_defContext *ctx) override;
-
     std::any visitNumber(TParser::NumberContext* ctx) override;
 
-    void PrintVars();
 private:
-    std::string& name_;
     data_types::VariableMap& vars_;
 
 };

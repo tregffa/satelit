@@ -8,7 +8,6 @@ using Poco::Dynamic::Var;
 TEST(SimplePrograms, CompileAndRunFunction) {
     STFunction st_function;
     st_function.Compile("FUNCTION main : INT\n"
-                    "BEGIN\n"
                     "main := 5 + 3 + 2;\n"
                     "END_FUNCTION");
     int res = st_function.Run({});
@@ -23,7 +22,6 @@ TEST(SimplePrograms, ProvideInputVars) {
                 a : INT;\n\
                 b: INT;\n\
             END_VAR\n\
-        BEGIN\n\
             sum := a + b; \
         END_FUNCTION");
     auto& vars = st_function.get_variabels();
@@ -38,7 +36,6 @@ TEST(SimplePrograms, ProvideInputVars) {
 TEST(SimplePrograms, ProvideRealTypes) {
     STFunction st_function;
     st_function.Compile("FUNCTION main : REAL\n"
-        "BEGIN\n"
         "main := 5.5 + 3.6;\n"
         "END_FUNCTION");
     auto& vars = st_function.get_variabels();
@@ -55,7 +52,6 @@ TEST(SimplePrograms, ProvideInputDifferentTypesVars) {
                 a : REAL;\n\
                 b: REAL;\n\
             END_VAR\n\
-        BEGIN\n\
             sum := a + b; \
         END_FUNCTION");
     auto& vars = st_function.get_variabels();

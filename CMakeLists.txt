@@ -6,6 +6,10 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # compiler must be 20
 set(CMAKE_CXX_STANDARD 20)
+if (MSVC)
+else()
+    add_compile_options(-Wall -g)
+endif()
 
 # required if linking to static library
 add_definitions(-DANTLR4CPP_STATIC)
@@ -49,6 +53,8 @@ add_library(satelit STATIC
     src/compile_visitor.cpp
     src/stfunction.cpp
     src/data_types/variable_map.cpp
+    src/compiler.cpp
+    src/st_objects.cpp
     ${ANTLR_SampleGrammarLexer_CXX_OUTPUTS}
     ${ANTLR_SampleGrammarParser_CXX_OUTPUTS}  )
 

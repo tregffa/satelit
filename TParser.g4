@@ -3,7 +3,7 @@ options { tokenVocab=TLexer; }
 
 program
     : stat* EOF
-    | func_def EOF
+    | func_def* EOF
     ;
 
 stat: ID COLON EQ expr SEMI
@@ -29,7 +29,8 @@ expr: ID
     ;
 
 
+
 func_var_out: VAR_OUTPUT (ID COLON type SEMI)* END_VAR;
 func_var_in: VAR_INPUT (ID COLON type SEMI)* END_VAR;
-func_def: FUNC name=ID COLON type func_var_in* func_var_out* BEGIN body=stat* END_FUNC;
+func_def: FUNC name=ID COLON type vars=func_var_in* func_var_out* body=stat* END_FUNC;
 func : name=ID LPAREN expr (COMMA expr)* RPAREN;

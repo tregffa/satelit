@@ -1,0 +1,5 @@
+std::any CompileVisitor::visitStat(TParser::StatContext *ctx) {
+    auto var_name = ctx->ID()->getText();
+    if (!variabels_.count(var_name)) throw UndefinedVariable();
+    return visitChildren(ctx);
+}

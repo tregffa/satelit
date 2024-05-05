@@ -1,15 +1,16 @@
 #include "runtime_visitor.h"
+#include "st_objects.h"
 #include "stack_machine.h"
 #include "stfunction.h"
 #include <iostream>
-#include <numeric>
 
 namespace satelit {
 
 StackMachine stack_;
+using namespace data_types;
+using namespace Poco::Dynamic;
 
-RuntimeVisitor::RuntimeVisitor(FunctionData& data) : name_(data.name_), 
-    vars_(data.vars_) {
+RuntimeVisitor::RuntimeVisitor(VariableMap& vars) :  vars_(vars) {
 }
 
 std::any RuntimeVisitor::visitProgram(TParser::ProgramContext *ctx) {
@@ -33,8 +34,6 @@ std::any RuntimeVisitor::visitExpr(TParser::ExprContext *ctx) {
         stack_.multiple();
     } else if (ctx->AND()){
         std::cout << "AND" << std::endl;
-    } else if (ctx->func()){
-        std::cout << "FUNC" << std::endl;
     }
     return result;
 }
@@ -49,19 +48,20 @@ std::any RuntimeVisitor::visitNumber(TParser::NumberContext* ctx) {
 }
 
 std::any RuntimeVisitor::visitFunc(TParser::FuncContext *ctx) {
-    std::cout << "Func need execute function" << std::endl;
-    visitChildren(ctx);
-    return std::any{};
+    auto result = visitChildren(ctx);
+
+    std::string name = ctx->ID()->getText();
+    
+    std::vector<Var> args;
+    for (int i = ctx->expr().size() - 1; i >= 0; i--) {
+        args.push_back(stack_.pop());
+    }
+    STFunction::SPtr func = STObjects::Get().get_function(name);
+    auto value = func->Run(args);
+    stack_.push(value);
+
+    return result;
 }
 
-std::any RuntimeVisitor::visitFunc_def(TParser::Func_defContext *ctx) {
-    return visitChildren(ctx);
-}
-
-void RuntimeVisitor::PrintVars() {
-    //for(auto& [name, value] : vars_){
-    //    std::cout << name << "\t=\t" << value << std::endl;
-    //}
-}
 
 }
